@@ -11,6 +11,7 @@ function Insert() {
 
     // TODO: 后端数据结构，需要姓名和ID
 
+
     const salesNames = tempSalesNames.map((name) =>
         <option value={name}>{name}</option>
     );
