@@ -23,6 +23,8 @@ function Insert() {
     const [startDate, setStartDate] = useState(new Date());
 
 
+
+
     return (
         <div className="insert">
             <div>录入销售记录</div>
@@ -74,7 +76,10 @@ function Insert() {
 
                 <Form.Group as={Row} className="mb-3">
                     <Col sm={{ span: 10, offset:1 }}>
-                        <Button type="submit" variant="outline-dark" >提交</Button>
+                        <Button
+                            type="submit"
+                            variant="outline-dark"
+                        >提交</Button>
                     </Col>
                 </Form.Group>
             </Form>

@@ -34,6 +34,7 @@ function Search() {
     );
 
     const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
     return (
         <div className="search">
@@ -80,7 +81,7 @@ function Search() {
                         结束日期
                     </Form.Label>
                     <Col sm={10}>
-                        <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+                        <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
                     </Col>
                 </Form.Group>
                 </div>
