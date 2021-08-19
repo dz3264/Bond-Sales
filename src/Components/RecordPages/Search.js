@@ -35,6 +35,15 @@ function Search() {
 
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+    const [salesName, setSalesName] = useState("");
+    const [bondType, setBondType] = useState("");
+    const [transAmount, setTransAmount] = useState(-1);
+
+
+    function submitSearch() {
+        alert(salesName+bondType+transAmount);
+    }
+
 
     return (
         <div className="search">
@@ -44,30 +53,36 @@ function Search() {
                 <div className={"form-section"}>
                 <div className={"form-subsection"}>
 
-                <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
+                <Form.Group as={Row} className="mb-3" controlId="formSalesName">
                     <Form.Label column sm={6}>
                         销售姓名
                     </Form.Label>
                     <Col sm={10}>
-                        <Form.Select aria-label="Default select example">
+                        <Form.Select
+                            aria-label="Default select example"
+                            onChange={(name) => setSalesName(name.target.value)}
+                        >
                             <option>选择销售</option>
                             {salesNames}
                         </Form.Select>
                     </Col>
                 </Form.Group>
 
-                <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
+                <Form.Group as={Row} className="mb-3" controlId="formBondType">
                     <Form.Label column sm={6}>
                         债券类型
                     </Form.Label>
                     <Col sm={10}>
-                        <Form.Select aria-label="Default select example">
+                        <Form.Select
+                            aria-label="Default select example"
+                            onChange={(type) => setBondType(type.target.value)}
+                        >
                             <option>选择债券类型</option>
                             {bondTypes}
                         </Form.Select>
                     </Col>
                 </Form.Group>
-                <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
+                <Form.Group as={Row} className="mb-3" controlId="formStartDate">
                     <Form.Label column sm={6}>
                         起始日期
                     </Form.Label>
@@ -76,7 +91,7 @@ function Search() {
                     </Col>
                 </Form.Group>
 
-                <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
+                <Form.Group as={Row} className="mb-3" controlId="formEndDate">
                     <Form.Label column sm={6}>
                         结束日期
                     </Form.Label>
@@ -89,7 +104,10 @@ function Search() {
 
                 <Form.Group as={Row} className="mb-3">
                     <Col sm={{ span: 10, offset:1 }}>
-                        <Button type="submit" variant="outline-dark" >查询</Button>
+                        <Button
+                            variant="outline-dark"
+                            onClick={submitSearch}
+                        >查询</Button>
                     </Col>
                 </Form.Group>
 
