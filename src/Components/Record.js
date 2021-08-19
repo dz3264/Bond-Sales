@@ -11,10 +11,10 @@ function Record() {
                 defaultActiveKey="search"
                 id="tab"
                 className="mb-3">
-                <Tab eventKey="insert" title="销售数据录入">
+                <Tab className={"tab-name"} eventKey="insert" title="销售数据录入">
                     <Insert/>
                 </Tab>
-                <Tab eventKey="search" title="报表查询">
+                <Tab className={"tab-name"} eventKey="search" title="报表查询">
                     <Search/>
                 </Tab>
             </Tabs>

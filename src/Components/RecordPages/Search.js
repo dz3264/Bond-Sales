@@ -1,10 +1,17 @@
 import './RecordPages.css';
-import {Button, Col, Container, Form, Row} from "react-bootstrap";
+import {Button, Col, Container, Form, Row, Table} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import {useState} from "react";
 
+// TODO: 后端链接
 const tempSalesNames = ["张三", "李四", "王五"];
 const tempBondTypes = ["债券A", "债券B", "债券C", "债券D"];
+const tempTransactions = [
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+];
 
 function Search() {
 
@@ -14,6 +21,16 @@ function Search() {
 
     const bondTypes = tempBondTypes.map((bond) =>
         <option value={bond}>{bond}</option>
+    );
+
+    const transactionsTable = tempTransactions.map((trans,idx)=>
+        <tr>
+            <td>{idx}</td>
+            <td>{trans[0]}</td>
+            <td>{trans[1]}</td>
+            <td>{trans[2]}</td>
+            <td>{trans[3]}</td>
+        </tr>
     );
 
     const [startDate, setStartDate] = useState(new Date());
@@ -49,9 +66,6 @@ function Search() {
                         </Form.Select>
                     </Col>
                 </Form.Group>
-                </div>
-
-                <div className={"form-subsection"}>
                 <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
                     <Form.Label column sm={6}>
                         起始日期
@@ -70,15 +84,32 @@ function Search() {
                     </Col>
                 </Form.Group>
                 </div>
-                </div>
 
 
                 <Form.Group as={Row} className="mb-3">
                     <Col sm={{ span: 10, offset:1 }}>
-                        <Button type="submit">查询</Button>
+                        <Button type="submit" variant="outline-dark" >查询</Button>
                     </Col>
                 </Form.Group>
+
+                </div>
             </Form>
+
+            <Table striped bordered hover>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>姓名</th>
+                    <th>日期</th>
+                    <th>证券类型</th>
+                    <th>金额</th>
+                </tr>
+                </thead>
+                <tbody>
+                {transactionsTable}
+                </tbody>
+            </Table>
+
         </div>
     );
 }

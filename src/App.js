@@ -6,9 +6,8 @@ import Record from "./Components/Record";
 function App() {
   return (
     <div className="App">
-      <Login/>
       <Header/>
-      <Login/>
+      <Record/>
     </div>
   );
 }
