@@ -11,6 +11,7 @@ function Insert() {
 
     // TODO: 后端数据结构，需要姓名和ID
 
+
     const salesNames = tempSalesNames.map((name) =>
         <option value={name}>{name}</option>
     );
@@ -73,7 +74,7 @@ function Insert() {
 
                 <Form.Group as={Row} className="mb-3">
                     <Col sm={{ span: 10, offset:1 }}>
-                        <Button type="submit">提交</Button>
+                        <Button type="submit" variant="outline-dark" >提交</Button>
                     </Col>
                 </Form.Group>
             </Form>

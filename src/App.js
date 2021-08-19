@@ -4,13 +4,22 @@ import Header from "./Components/Header";
 import Record from "./Components/Record";
 
 function App() {
-  return (
-    <div className="App">
-      <Login/>
-      <Header/>
-      <Login/>
-    </div>
-  );
+
+    const userInfo = {
+        userUID:"ZhangSan",
+        userName:"张三"
+    };
+
+    //const userInfo = {};
+    return (
+        <div className="App">
+            <Header userInfo={userInfo}/>
+            {userInfo.userUID
+                ? <Record/>
+                : <Login/>}
+
+        </div>
+    );
 }
 
 export default App;
