@@ -8,7 +8,7 @@ function Record() {
         <div className="record">
             <Container>
             <Tabs
-                defaultActiveKey="search"
+                defaultActiveKey="insert"
                 id="tab"
                 className="mb-3">
                 <Tab className={"tab-name"} eventKey="insert" title="销售数据录入">
