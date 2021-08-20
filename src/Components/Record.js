@@ -22,7 +22,7 @@ function Record() {
         };
         const fetchBondList = async () => {
             const bondResult = await axios(
-                '/api/ListBond',
+                '/api/ListBond'
             );
 
             setBondList(bondResult.data);

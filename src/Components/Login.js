@@ -3,7 +3,8 @@ import {Button, ButtonGroup, Card, Form} from 'react-bootstrap';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,7 +26,28 @@ export default function Login(){
     function submitSearch() {
         alert('欢迎'+name+'，'+'正在登陆中，请稍等');
     }
-    
+
+    useEffect(() => {
+        const fetchName = async () => {
+            let data = {"name":"1234","password":"yyyyyy"};
+            const nameResult = await axios.post('${this.$url}/test/testRequest',data)
+                .then(res=>{
+                    console.log('res=>',res);
+                })
+
+            setName(nameResult.data);
+        };
+        // const fetchPassword = async () => {
+        //     const passwordResult = await axios(
+        //         '/api/ListBond'
+        //     );
+        //
+        //     setPassword(passwordResult.data);
+        // };
+        fetchName();
+        // fetchPassword();
+    }, []);
+
 
     return (
         <div className="LOGIN"  align="center">
