@@ -10,28 +10,28 @@ function Insert(props) {
     console.log(props.bondList);
 
     const salesNames = props.userList.map((user) =>
-        <option value={user.userid}>{user.username+"-"+user.userid}</option>
+        <option  value={user.username+"-"+user.userid}>{user.username+"-"+user.userid}</option>
     );
 
     const bondTypes = props.bondList.map((bond) =>
-        <option value={bond.bondid}>{bond.bondname}</option>
+        <option value={bond.bondname+"-"+bond.bondid}>{bond.bondname}</option>
     );
 
     const [startDate, setStartDate] = useState(new Date());
+    const [salesID, setSalesId] = useState("");
     const [salesName, setSalesName] = useState("");
+    const [bondId, setBondId] = useState("");
     const [bondType, setBondType] = useState("");
     const [transAmount, setTransAmount] = useState(-1);
     const [selectedFile, setSelectedFile] = useState("");
 
     function submitInsert() {
-        alert(salesName+bondType+transAmount);
+        alert(salesID+"\n"+salesName+"\n"+bondId+"\n"+bondType+"\n"+transAmount+"\n"+startDate);
     }
 
     function uploadFile() {
         console.log(selectedFile);
     }
-
-
 
     return (
         <div className="insert">
@@ -46,8 +46,12 @@ function Insert(props) {
                     <Col sm={6}>
                         <Form.Select
                             aria-label="Default select example"
-                            onChange={(name) => setSalesName(name.target.value)}
-                        >
+                            onChange={(name) => {
+                                let value = name.target.value.split("-")[0];
+                                let id = name.target.value.split("-")[1];
+                                setSalesName(value);
+                                setSalesId(id);
+                            }}>
                             <option>选择销售</option>
                             {salesNames}
                         </Form.Select>
@@ -61,8 +65,12 @@ function Insert(props) {
                     <Col sm={8}>
                         <Form.Select
                             aria-label="Default select example"
-                            onChange={(type) => setBondType(type.target.value)}
-                        >
+                            onChange={(bond) => {
+                                let value = bond.target.value.split("-")[0];
+                                let id = bond.target.value.split("-")[1];
+                                setBondType(value);
+                                setBondId(id);
+                            }}>
                             <option>选择债券类型</option>
                             {bondTypes}
                         </Form.Select>
