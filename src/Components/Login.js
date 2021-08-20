@@ -25,6 +25,7 @@ export default function Login(){
     function submitSearch() {
         alert('欢迎'+name+'，'+'正在登陆中，请稍等');
     }
+    
 
     return (
         <div className="LOGIN"  align="center">
