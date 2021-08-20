@@ -2,12 +2,11 @@ import './RecordPages.css';
 import "react-datepicker/dist/react-datepicker.css";
 import {Col, Row, Form, Button} from "react-bootstrap";
 import DatePicker from "react-datepicker";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 
 function Insert(props) {
-
-    console.log(props.bondList);
 
     const salesNames = props.userList.map((user) =>
         <option  value={user.username+"-"+user.userid}>{user.username+"-"+user.userid}</option>
@@ -26,7 +25,30 @@ function Insert(props) {
     const [selectedFile, setSelectedFile] = useState("");
 
     function submitInsert() {
-        alert(salesID+"\n"+salesName+"\n"+bondId+"\n"+bondType+"\n"+transAmount+"\n"+startDate);
+        // TODO: check invalid input data
+
+        const salesData = {
+            bondId:bondId,
+            userId:salesID,
+            price:transAmount,
+            date:startDate
+        };
+
+        //alert(salesID+"\n"+salesName+"\n"+bondId+"\n"+bondType+"\n"+transAmount+"\n"+startDate);
+        axios.post(
+            '/api/insertSales',
+            salesData
+        ).then(res => {
+            if(res.data){
+                // TODO: popup insert successfully
+                console.log("res: ",res.data);
+            } else {
+                // TODO: insert failed
+                console.log("res: ",res.data);
+            }
+        }).catch((error) => {
+            console.log("error: ",error);
+        });
     }
 
     function uploadFile() {
@@ -38,7 +60,7 @@ function Insert(props) {
             <div className={"insert-section"}>
             <div>录入销售记录</div>
             <br/>
-            <Form onSubmit={submitInsert}>
+            <Form>
                 <Form.Group as={Row} className="mb-3" controlId="formSalesName">
                     <Form.Label column sm={4}>
                         销售姓名
@@ -103,7 +125,7 @@ function Insert(props) {
                 <Form.Group as={Row} className="mb-3">
                     <Col sm={{ span: 10, offset:1 }}>
                         <Button
-                            type="submit"
+                            onClick={submitInsert}
                             variant="outline-dark"
                         >提交</Button>
                     </Col>
