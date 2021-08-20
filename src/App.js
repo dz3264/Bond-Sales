@@ -6,10 +6,10 @@ import axios from "axios";
 
 function App() {
 
-    const userInfo = {
-        userUID:"ZhangSan",
-        userName:"张三"
-    };
+    // const userInfo = {
+    //     userUID:"ZhangSan",
+    //     userName:"张三"
+    // };
 
 
     axios.get('/api/findAll')
@@ -17,7 +17,7 @@ function App() {
             console.log(res.data);
         });
 
-    //const userInfo = {};
+    const userInfo = {};
     return (
         <div className="App">
             <Header userInfo={userInfo}/>
