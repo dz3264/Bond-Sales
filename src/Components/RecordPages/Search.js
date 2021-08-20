@@ -1,8 +1,10 @@
 import './RecordPages.css';
-import {Button, Col, Container, Form, Row, Table} from "react-bootstrap";
+import {Button, Col, Container, Form, Pagination, Row, Table} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import {useState} from "react";
 
+
+const dataPerPage = 10;
 // TODO: 后端链接
 const tempSalesNames = ["张三", "李四", "王五"];
 const tempBondTypes = ["债券A", "债券B", "债券C", "债券D"];
@@ -11,10 +13,102 @@ const tempTransactions = [
     ["李四", "2021-08-10", "债券B", 1000],
     ["张三", "2021-07-10", "债券A", 2000],
     ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
+    ["张三", "2021-07-10", "债券A", 1000],
+    ["李四", "2021-08-10", "债券B", 1000],
+    ["张三", "2021-07-10", "债券A", 2000],
+    ["王五", "2021-06-10", "债券D", 1500],
 ];
 
 function Search() {
 
+    // state
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+    const [salesName, setSalesName] = useState("");
+    const [bondType, setBondType] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+
+    // constant
+    const totalPage = Math.ceil(tempTransactions.length/dataPerPage);
+    const pagination = [];
+
+    // data
     const salesNames = tempSalesNames.map((name) =>
         <option value={name}>{name}</option>
     );
@@ -33,17 +127,28 @@ function Search() {
         </tr>
     );
 
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
-    const [salesName, setSalesName] = useState("");
-    const [bondType, setBondType] = useState("");
-    const [transAmount, setTransAmount] = useState(-1);
 
-
-    function submitSearch() {
-        alert(salesName+bondType+transAmount);
+    // pagination
+    for (let i = 1; i <= totalPage; i++){
+        if (i === currentPage){
+            pagination.push(<Pagination.Item key={i}  active>{i}</Pagination.Item>)
+        }
+        else{
+            pagination.push(<Pagination.Item key={i}  onClick={(e)=>changePage(e.target.text)}>{i}</Pagination.Item>)
+        }
     }
 
+    // functions
+    function submitSearch() {
+        alert(salesName+bondType);
+    }
+
+    function changePage(p) {
+        let newPage = parseInt(p);
+        if (newPage >= 1 && newPage <= totalPage){
+            setCurrentPage(newPage);
+        }
+    }
 
     return (
         <div className="search">
@@ -128,6 +233,21 @@ function Search() {
                 {transactionsTable}
                 </tbody>
             </Table>
+            {totalPage > 1
+                ? <Pagination>
+                    <Pagination.First
+                        onClick={()=>changePage(1)}/>
+                    <Pagination.Prev
+                        onClick={()=>changePage(currentPage-1)}/>
+                    {pagination}
+                    <Pagination.Next
+                        onClick={()=>changePage(currentPage+1)}/>
+                    <Pagination.Last
+                        onClick={()=>changePage(totalPage)}/>
+                </Pagination>
+                : null}
+
+
 
         </div>
     );
