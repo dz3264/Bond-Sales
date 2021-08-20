@@ -24,12 +24,15 @@ function Insert() {
     const [salesName, setSalesName] = useState("");
     const [bondType, setBondType] = useState("");
     const [transAmount, setTransAmount] = useState(-1);
-
+    const [selectedFile, setSelectedFile] = useState("");
 
     function submitInsert() {
         alert(salesName+bondType+transAmount);
     }
 
+    function uploadFile() {
+        console.log(selectedFile);
+    }
 
     return (
         <div className="insert">
@@ -98,6 +101,24 @@ function Insert() {
                     </Col>
                 </Form.Group>
             </Form>
+
+            <Form.Group controlId="formFile" className="mb-3">
+                <br/>
+                <Form.Label>批量导入销售数据</Form.Label>
+                <Form.Control
+                    type="file"
+                    accept=".csv"
+                    onChange={(file) => setSelectedFile(file.target.files)}
+                />
+            </Form.Group>
+
+            <Form.Group as={Row} className="mb-3">
+
+                <Button
+                    variant="outline-dark"
+                    onClick={uploadFile}
+                >导入</Button>
+            </Form.Group>
         </div>
     );
 }
