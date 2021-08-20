@@ -1,23 +1,20 @@
 import './RecordPages.css';
 import "react-datepicker/dist/react-datepicker.css";
-import {Col, Row, Form, Button, Container} from "react-bootstrap";
+import {Col, Row, Form, Button} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import {useState} from "react";
 
-const tempSalesNames = ["张三", "李四", "王五"];
-const tempBondTypes = ["债券A", "债券B", "债券C", "债券D"];
 
-function Insert() {
+function Insert(props) {
 
-    // TODO: 后端数据结构，需要姓名和ID
+    console.log(props.bondList);
 
-
-    const salesNames = tempSalesNames.map((name) =>
-        <option value={name}>{name}</option>
+    const salesNames = props.userList.map((user) =>
+        <option value={user.userid}>{user.username+"-"+user.userid}</option>
     );
 
-    const bondTypes = tempBondTypes.map((bond) =>
-        <option value={bond}>{bond}</option>
+    const bondTypes = props.bondList.map((bond) =>
+        <option value={bond.bondid}>{bond.bondname}</option>
     );
 
     const [startDate, setStartDate] = useState(new Date());
@@ -34,8 +31,11 @@ function Insert() {
         console.log(selectedFile);
     }
 
+
+
     return (
         <div className="insert">
+            <div className={"insert-section"}>
             <div>录入销售记录</div>
             <br/>
             <Form onSubmit={submitInsert}>
@@ -101,16 +101,18 @@ function Insert() {
                     </Col>
                 </Form.Group>
             </Form>
+            </div>
 
-            <Form.Group controlId="formFile" className="mb-3">
-                <br/>
+            <div className={"insert-section insert-file"}>
+
                 <Form.Label>批量导入销售数据</Form.Label>
+                <br/>
                 <Form.Control
                     type="file"
                     accept=".csv"
                     onChange={(file) => setSelectedFile(file.target.files)}
                 />
-            </Form.Group>
+                <br/>
 
             <Form.Group as={Row} className="mb-3">
 
@@ -119,6 +121,7 @@ function Insert() {
                     onClick={uploadFile}
                 >导入</Button>
             </Form.Group>
+            </div>
         </div>
     );
 }

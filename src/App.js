@@ -11,11 +11,6 @@ function App() {
         userName:"张三"
     };
 
-    axios.get('/api/findAll')
-        .then(res => {
-            console.log(res.data);
-        });
-
     // const userInfo = {};
     return (
         <div className="App">

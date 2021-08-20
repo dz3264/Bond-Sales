@@ -6,8 +6,6 @@ import {useState} from "react";
 
 const dataPerPage = 10;
 // TODO: 后端链接
-const tempSalesNames = ["张三", "李四", "王五"];
-const tempBondTypes = ["债券A", "债券B", "债券C", "债券D"];
 const tempTransactions = [
     ["张三", "2021-07-10", "债券A", 1000],
     ["李四", "2021-08-10", "债券B", 1000],
@@ -95,7 +93,7 @@ const tempTransactions = [
     ["王五", "2021-06-10", "债券D", 1500],
 ];
 
-function Search() {
+function Search(props) {
 
     // state
     const [startDate, setStartDate] = useState(new Date());
@@ -109,12 +107,12 @@ function Search() {
     const pagination = [];
 
     // data
-    const salesNames = tempSalesNames.map((name) =>
-        <option value={name}>{name}</option>
+    const salesNames = props.userList.map((user) =>
+        <option value={user.userid}>{user.username+"-"+user.userid}</option>
     );
 
-    const bondTypes = tempBondTypes.map((bond) =>
-        <option value={bond}>{bond}</option>
+    const bondTypes = props.bondList.map((bond) =>
+        <option value={bond.bondid}>{bond.bondname}</option>
     );
 
     const transactionsTable = tempTransactions.map((trans,idx)=>

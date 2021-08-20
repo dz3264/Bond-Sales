@@ -1,9 +1,18 @@
-.insert{
+.insert-section{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     flex-direction: column;
     align-items: center;
+}
+
+.insert-file{
+    justify-content: flex-start;
+}
+
+.insert{
+    display: flex;
+    justify-content: space-around;
 }
 
 .search{
