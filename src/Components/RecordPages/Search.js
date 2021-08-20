@@ -108,11 +108,11 @@ function Search(props) {
 
     // data
     const salesNames = props.userList.map((user) =>
-        <option value={user.userid}>{user.username+"-"+user.userid}</option>
+        <option id={user.userid} value={user.username}>{user.username+"-"+user.userid}</option>
     );
 
     const bondTypes = props.bondList.map((bond) =>
-        <option value={bond.bondid}>{bond.bondname}</option>
+        <option id={bond.bondid} value={bond.bondname}>{bond.bondname}</option>
     );
 
     const transactionsTable = tempTransactions.map((trans,idx)=>
