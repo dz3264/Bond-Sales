@@ -14,9 +14,9 @@ function App() {
     const userInfo = {};
     return (
         <div className="App">
-            <Header userInfo={userInfo}/>
+
             {userInfo.userUID
-                ? <Record/>
+                ?<><Header userInfo={userInfo}/><Record/></>
                 : <Login/>}
 
         </div>

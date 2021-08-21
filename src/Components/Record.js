@@ -1,4 +1,4 @@
-import './Record.css';
+import './Style.css';
 import {Container, Tabs,Tab} from "react-bootstrap";
 import Insert from "./RecordPages/Insert";
 import Search from "./RecordPages/Search";
