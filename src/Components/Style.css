@@ -110,6 +110,16 @@
     }
 }
 
+/******** Modal ********/
+#modal-title{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.modal-body{
+    margin: 0 10% 0 10% ;
+}
 
 /******** Record ********/
 .record{
