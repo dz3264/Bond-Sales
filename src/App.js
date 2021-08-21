@@ -1,7 +1,7 @@
 import './App.css';
 import Login from "./Components/Login";
 import Header from "./Components/Header";
-import Record from "./Components/Record";
+import SideNavbar from "./Components/SideNavbar";
 import Insert from "./Components/RecordPages/Insert";
 import Search from "./Components/RecordPages/Search";
 import axios from "axios";
@@ -10,16 +10,11 @@ import {Container } from "react-bootstrap";
 
 function App() {
 
-    // Insert:1, Search:2
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const userInfo = {
-        userUID:"ZhangSan",
-        userName:"张三"
-    };
+    const [currentPage, setCurrentPage] = useState("insert");
 
     const [userList, setUserList] = useState([]);
     const [bondList, setBondList] = useState([]);
+    const [expanded, setExpanded] = useState(false);
 
     useEffect(() => {
         const fetchUserList = async () => {
@@ -40,23 +35,31 @@ function App() {
         fetchBondList();
     }, []);
 
-    //const userInfo = {};
+    // TODO: get userinfo from backend
+    // const userInfo = {
+    //     userUID:"ZhangSan",
+    //     userName:"张三"
+    // };
+    const userInfo = {};
     return (
         <div className="App">
 
             {userInfo.userUID
-                ?
-                <>
-                    <Header
-                    userInfo={userInfo}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                /><Container className={"record"}>
-                    {currentPage === 1
-                    ? <Insert userList={userList} bondList={bondList}/>
-                    : <Search userList={userList} bondList={bondList}/>
-                }
-                </Container>
+                ?<>
+                    <div style={{
+                        marginLeft: expanded ? 240 : 64,
+                    }}>
+                    <Header userInfo={userInfo}/>
+                    <Container>
+                        {currentPage === "insert"
+                            ? <Insert userList={userList} bondList={bondList}/>
+                            : <Search userList={userList} bondList={bondList}/>}
+                    </Container>
+                    </div>
+                    <SideNavbar
+                        setCurrentPage={setCurrentPage}
+                        setExpanded={setExpanded}
+                    />
                 </>
                 : <Login/>}
 
