@@ -1,0 +1,167 @@
+
+/******** Header ********/
+
+.header{
+    margin-bottom: 20px;
+}
+
+.nav-link.active{
+    font-weight: 500;
+    color: #106eea !important;
+}
+/*.nav-link{*/
+/*    color: black !important;*/
+/*}*/
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    min-height: 100vh !important;
+    z-index: 100;
+    padding: 48px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+#sidebar-wrapper{
+    min-height: 100vh !important;
+    width: 100vw;
+    margin-left: -1rem;
+    -webkit-transition: margin .25s ease-out;
+    -moz-transition: margin .25s ease-out;
+    -o-transition: margin .25s ease-out;
+    transition: margin .25s ease-out;
+}
+#sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+}
+
+#page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+}
+
+/******** Login ********/
+#hero {
+    width: 100%;
+    height: 100vh;
+    background: url("../assets/img/hero-bg.jpg") top left;
+    background-size: cover;
+    position: absolute;
+}
+
+#hero:before {
+    content: "";
+    background: rgba(255, 255, 255, 0.6);
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+#hero .container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#hero .btn-group-sm{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+#hero .btn-signup{
+    margin-left: 30px;
+}
+
+#hero h1 {
+    margin: 0;
+    font-size: 48px;
+    font-weight: 500;
+    line-height: 56px;
+    color: #222222;
+    font-family: "Poppins", sans-serif;
+}
+
+#hero h1 span {
+    color: #106eea;
+}
+
+#hero h2 {
+    color: #555555;
+    margin: 5px 0 30px 0;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+#hero .btn {
+    font-family: "Poppins", sans-serif;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 20px;
+    letter-spacing: 2px;
+    display: inline-block;
+    padding: 10px 28px;
+    border-radius: 4px;
+    transition: 0.5s;
+}
+
+
+@media (min-width: 1024px) {
+    #hero {
+        background-attachment: fixed;
+    }
+}
+
+@media (max-width: 768px) {
+    #hero {
+        height: 100vh;
+    }
+    #hero h1 {
+        font-size: 28px;
+        line-height: 36px;
+    }
+    #hero h2 {
+        font-size: 18px;
+        line-height: 24px;
+        margin-bottom: 30px;
+    }
+    #hero .btn-get-started, #hero .btn-watch-video {
+        font-size: 13px;
+    }
+}
+
+@media (max-height: 500px) {
+    #hero {
+        height: 120vh;
+    }
+}
+
+/******** Modal ********/
+#modal-title{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.modal-body{
+    margin: 0 10% 0 10% ;
+}
+
+/******** SideNavbar ********/
+
+.sidenav{
+    background-color: #0d58ba !important;
+}
+
+.sidenav-icon{
+    background-size: 60% 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+    height:100%;
+    width:100%;
+}
