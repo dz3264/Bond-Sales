@@ -7,14 +7,21 @@ function Header(props) {
     function signOut(){
         alert("signout");
     }
+
     return (
         <div className="header">
-            <Navbar className={"color-white shadow"} variant="light">
+            <Navbar bg="light" variant="light">
                 <Container>
                     <Navbar.Brand>债券销售管理系统</Navbar.Brand>
                     <Nav className="me-auto">
-                        <Nav.Link onClick={signOut} active>插入数据</Nav.Link>
-                        <Nav.Link >查询记录</Nav.Link>
+                        {}
+                        <Nav.Link
+                            className={props.currentPage === 1? "active":""}
+                            onClick={()=>props.setCurrentPage(1)}>
+                            插入数据</Nav.Link>
+                        <Nav.Link
+                            className={props.currentPage === 2? "active":""}
+                            onClick={()=>props.setCurrentPage(2)}>查询记录</Nav.Link>
                     </Nav>
                     <Navbar.Collapse className="justify-content-end">
                         <Nav.Link eventKey="disabled" disabled>
@@ -22,7 +29,6 @@ function Header(props) {
                         </Nav.Link>
                         <Button variant="outline-dark" onClick={signOut}>登出</Button>
                     </Navbar.Collapse>
-
 
                 </Container>
             </Navbar>
