@@ -55,7 +55,10 @@ export default function SignInModal(props) {
                 </Form.Group>
             </Modal.Body>
             <Modal.Footer>
+                <div className={"modal-footer-content"}>
+                <a href={""} className={"footer-link"}>忘记密码</a>
                 <Button onClick={submitLogin}>登陆</Button>
+                </div>
             </Modal.Footer>
         </Modal>
     );
