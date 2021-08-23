@@ -10,7 +10,7 @@ import {Container } from "react-bootstrap";
 
 function App() {
 
-    const [currentPage, setCurrentPage] = useState("search");
+    const [currentPage, setCurrentPage] = useState("insert");
 
     const [userList, setUserList] = useState([]);
     const [bondList, setBondList] = useState([]);

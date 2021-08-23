@@ -1,8 +1,8 @@
 import './RecordPages.css';
 import "react-datepicker/dist/react-datepicker.css";
-import {Col, Row, Form, Button} from "react-bootstrap";
+import {Col, Row, Form, Button, Table} from "react-bootstrap";
 import DatePicker from "react-datepicker";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 
 
@@ -21,6 +21,19 @@ function Insert(props) {
     const [bondId, setBondId] = useState("");
     const [transAmount, setTransAmount] = useState(-1);
     const [selectedFile, setSelectedFile] = useState("");
+    const [latestRecords, setLatestRecords] = useState([]);
+
+    useEffect(() => {
+        const fetchLatestRecords = async () => {
+            const recordsResult = await axios(
+                '/api/LatestRecords',
+            );
+
+            setLatestRecords(recordsResult.data);
+        };
+
+        fetchLatestRecords();
+    }, []);
 
     async function submitInsert() {
 
@@ -40,6 +53,19 @@ function Insert(props) {
             });
 
     }
+
+    console.log(latestRecords);
+
+    const latestRecordsTable = latestRecords.map((record,idx)=>
+
+        <tr>
+            <td>{idx}</td>
+            <td>{record.username}</td>
+            <td>{record.date.split('T')[0]}</td>
+            <td>{record.bondname}</td>
+            <td>{record.price}</td>
+        </tr>
+    );
 
     function uploadFile() {
         // Create an object of formData
@@ -62,6 +88,7 @@ function Insert(props) {
     }
 
     return (
+        <>
         <div className="insert">
             <div className={"insert-section"}>
             <div>录入销售记录</div>
@@ -153,6 +180,24 @@ function Insert(props) {
             </Form.Group>
             </div>
         </div>
+        <div className={"latest-table"}>
+            <Table striped bordered hover>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>姓名</th>
+                    <th>日期</th>
+                    <th>证券类型</th>
+                    <th>金额</th>
+                </tr>
+                </thead>
+                <tbody>
+                {latestRecordsTable}
+                </tbody>
+            </Table>
+
+        </div>
+        </>
     );
 }
 

@@ -41,8 +41,6 @@ function Search(props) {
                 <td>{trans.bondname}</td>
                 <td>{trans.price}</td>
             </tr>
-
-
     );
 
     // for (let i = 1; i <= totalPage; i++){
