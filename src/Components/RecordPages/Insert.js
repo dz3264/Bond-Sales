@@ -70,7 +70,7 @@ function Insert(props) {
 
         // Update the formData object
         formData.append(
-            "myFile",
+            "uploadFile",
             selectedFile,
             selectedFile.name
         );
@@ -88,7 +88,7 @@ function Insert(props) {
         <>
         <div className="insert">
             <div className={"insert-section"}>
-            <div>录入销售记录</div>
+            <h4>录入销售记录</h4>
             <br/>
             <Form onSubmit={submitInsert}>
                 <Form.Group as={Row} className="mb-3" controlId="formSalesName">
@@ -150,7 +150,7 @@ function Insert(props) {
                     <Col sm={{ span: 10, offset:1 }}>
                         <Button
                             type="submit"
-                            variant="outline-dark"
+                            variant="primary"
                         >提交</Button>
                     </Col>
                 </Form.Group>
@@ -159,7 +159,7 @@ function Insert(props) {
 
             <div className={"insert-section insert-file"}>
 
-                <Form.Label>批量导入销售数据</Form.Label>
+                <h4>批量导入销售数据</h4>
                 <br/>
                 <Form.Control
                     type="file"
@@ -171,7 +171,7 @@ function Insert(props) {
             <Form.Group as={Row} className="mb-3">
 
                 <Button
-                    variant="outline-dark"
+                    variant="outline-primary"
                     onClick={uploadFile}
                 >导入</Button>
             </Form.Group>

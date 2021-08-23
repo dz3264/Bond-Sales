@@ -1,8 +1,9 @@
 import './RecordPages.css';
+import {useState} from "react";
 import {Button, Col, Container, Form, Pagination, Row, Table} from "react-bootstrap";
 import DatePicker from "react-datepicker";
-import {useState} from "react";
 import axios from "axios";
+import { CSVLink } from "react-csv";
 
 const dataPerPage = 10;
 
@@ -19,6 +20,12 @@ function Search(props) {
 
     //const [currentPage, setCurrentPage] = useState(1);
 
+    const fileHeader = [
+        { label: "姓名", key: "username" },
+        { label: "日期", key: "date" },
+        { label: "证券类型", key: "bondname" },
+        { label: "金额", key: "price" }
+    ];
 
     // data
     const salesNames = props.userList.map((user) =>
@@ -68,6 +75,7 @@ function Search(props) {
             });
     }
 
+
     // function changePage(p) {
     //     let newPage = parseInt(p);
     //     if (newPage >= 1 && newPage <= totalPage){
@@ -75,13 +83,9 @@ function Search(props) {
     //     }
     // }
 
-    console.log(salesID);
-    console.log(bondId);
-
     return (
         <div className="search">
-            <div>查询销售数据</div>
-            <br/>
+            <h3>查询销售数据</h3>
             <Form>
                 <div className={"form-section"}>
                 <div className={"form-subsection"}>
@@ -135,14 +139,33 @@ function Search(props) {
                 </div>
 
 
-                <Form.Group as={Row} className="mb-3">
-                    <Col sm={{ span: 10, offset:1 }}>
+                <div  className="search-btn-group">
+
                         <Button
-                            variant="outline-dark"
+                            className={"search-btn"}
+                            variant="primary"
                             onClick={submitSearch}
                         >查询</Button>
-                    </Col>
-                </Form.Group>
+
+                    <CSVLink
+                        data={searchResult}
+                        headers={fileHeader}
+                        filename={"债券销售数据.csv"}
+                        onClick={event => {
+                            if(searchResult.length <= 0){
+                                alert("查询数据为空！");
+                                return false;
+                            }
+                        }}
+                    >
+                        <Button
+                            className={"search-btn"}
+                            variant="outline-primary"
+                        >
+                            下载
+                        </Button>
+                    </CSVLink>
+                </div>
 
                 </div>
             </Form>
