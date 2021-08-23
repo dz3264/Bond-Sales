@@ -35,7 +35,7 @@ function Search(props) {
     const transactionsTable = searchResult.map((trans,idx)=>
 
             <tr>
-                <td>{idx}</td>
+                <td>{idx+1}</td>
                 <td>{trans.username}</td>
                 <td>{trans.date.split('T')[0]}</td>
                 <td>{trans.bondname}</td>

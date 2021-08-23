@@ -38,7 +38,6 @@ function Insert(props) {
     const latestRecordsTable = latestRecords.map((record,idx)=>
 
         <tr>
-            <td>{idx}</td>
             <td>{record.username}</td>
             <td>{record.date}</td>
             <td>{record.bondname}</td>
@@ -182,7 +181,6 @@ function Insert(props) {
             <Table striped bordered hover>
                 <thead>
                 <tr>
-                    <th>#</th>
                     <th>姓名</th>
                     <th>日期</th>
                     <th>证券类型</th>
