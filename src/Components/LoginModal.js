@@ -13,16 +13,7 @@ export default function SignInModal(props) {
     }
 
     useEffect(() => {
-        const fetchName = async () => {
-            let data = {"name":"1234","password":"yyyyyy"};
-            const nameResult = await axios.post('${this.$url}/test/testRequest',data)
-                .then(res=>{
-                    console.log('res=>',res);
-                });
 
-            setName(nameResult.data);
-        };
-        fetchName();
     }, []);
 
     return (
@@ -57,7 +48,7 @@ export default function SignInModal(props) {
             <Modal.Footer>
                 <div className={"modal-footer-content"}>
                 <a href={""} className={"footer-link"}>忘记密码</a>
-                <Button onClick={submitLogin}>登陆</Button>
+                <Button onClick={() => {props.loginFunction(name, password)}}>登陆</Button>
                 </div>
             </Modal.Footer>
         </Modal>

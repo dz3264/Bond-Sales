@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import LoginModal from "./LoginModal";
 import axios from "axios";
 
-export default function Login(){
+export default function Login(props){
 
     const [modalShow, setModalShow] = useState(false);
 
@@ -28,6 +28,7 @@ export default function Login(){
             <LoginModal
                 show={modalShow}
                 onHide={() => setModalShow(false)}
+                loginFunction={props.loginFunction}
             />
         </section>
     );
