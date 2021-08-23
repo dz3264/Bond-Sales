@@ -15,6 +15,7 @@ function App() {
     const [userList, setUserList] = useState([]);
     const [bondList, setBondList] = useState([]);
     const [expanded, setExpanded] = useState(false);
+    const [userInfo, setUserInfo] = useState(false);
 
     useEffect(() => {
         const fetchUserList = async () => {
@@ -35,11 +36,19 @@ function App() {
         fetchBondList();
     }, []);
 
+    async function loginFunction(name, password){
+        await axios.post('${this.$url}/test/testRequest',data)
+            .then(res=>{
+                console.log('res=>',res);
+                setUserInfo(res.data);
+            });
+    }
+
     // TODO: get userinfo from backend
-    const userInfo = {
-        userUID:"ZhangSan",
-        userName:"张三"
-    };
+    // const userInfo = {
+    //     userUID:"ZhangSan",
+    //     userName:"张三"
+    // };
     //const userInfo = {};
     return (
         <div className="App">
@@ -61,7 +70,7 @@ function App() {
                         setExpanded={setExpanded}
                     />
                 </>
-                : <Login/>}
+                : <Login loginFunction={loginFunction}/>}
 
         </div>
     );

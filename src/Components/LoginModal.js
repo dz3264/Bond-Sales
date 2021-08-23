@@ -12,19 +12,6 @@ export default function SignInModal(props) {
         alert('欢迎'+name+'，'+'正在登陆中，请稍等');
     }
 
-    useEffect(() => {
-        const fetchName = async () => {
-            let data = {"name":"1234","password":"yyyyyy"};
-            const nameResult = await axios.post('${this.$url}/test/testRequest',data)
-                .then(res=>{
-                    console.log('res=>',res);
-                });
-
-            setName(nameResult.data);
-        };
-        fetchName();
-    }, []);
-
     return (
         <Modal
             {...props}
@@ -57,7 +44,7 @@ export default function SignInModal(props) {
             <Modal.Footer>
                 <div className={"modal-footer-content"}>
                 <a href={""} className={"footer-link"}>忘记密码</a>
-                <Button onClick={submitLogin}>登陆</Button>
+                <Button onClick={()=>{loginFunction(name, password)}}>登陆</Button>
                 </div>
             </Modal.Footer>
         </Modal>
