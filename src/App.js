@@ -15,7 +15,7 @@ function App() {
     const [userList, setUserList] = useState([]);
     const [bondList, setBondList] = useState([]);
     const [expanded, setExpanded] = useState(false);
-    const [userInfo, setUserInfo] = useState(null);
+    //const [userInfo, setUserInfo] = useState(null);
 
     useEffect(() => {
         const sessionInfo = sessionStorage.getItem("USER");
@@ -40,30 +40,22 @@ function App() {
 
     }, []);
 
-    async function loginFunction(name, password){
-        await axios.post('${this.$url}/test/testRequest',data)
-            .then(res=>{
-                console.log('res=>',res);
-                setUserInfo(res.data);
-            });
-    }
-
     // TODO: get userinfo from backend
-    // const userInfo = {
-    //     userUID:"ZhangSan",
-    //     userName:"张三"
-    // };
+    let userInfo = {
+        userUID:"ZhangSan",
+        userName:"张三"
+    };
     //const userInfo = {};
 
     async function loginFunction(username, password) {
         let data = {"username":username, "password":password};
-        await axios.post('api/login',data)
-                .then(res=>{
-                    setUserInfo(res.data);
-                    console.log('res=>',res);
-                });
+        // await axios.post('api/login',data)
+        //         .then(res=>{
+        //             setUserInfo(res.data);
+        //             console.log('res=>',res);
+        //         });
 
-        };
+    }
 
     return (
         <div className="App">

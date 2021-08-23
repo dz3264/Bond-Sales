@@ -13,8 +13,8 @@ function Search(props) {
     const [endDate, setEndDate] = useState(new Date());
     const [salesName, setSalesName] = useState("");
     const [bondType, setBondType] = useState("");
-    const [salesID, setSalesId] = useState("");
-    const [bondId, setBondId] = useState("");
+    const [salesID, setSalesId] = useState(0);
+    const [bondId, setBondId] = useState(0);
     const [searchResult, setSearchResult] = useState([]);
 
     //const [currentPage, setCurrentPage] = useState(1);
@@ -55,8 +55,8 @@ function Search(props) {
     // functions
     async function submitSearch() {
         let data = {
-            "userid":salesID,
-            "bondid":bondId,
+            "userid":salesID > 0 ? salesID : null,
+            "bondid":bondId > 0 ? bondId : null,
             "startDate":startDate,
             "endDate":endDate
         };
@@ -75,6 +75,9 @@ function Search(props) {
     //     }
     // }
 
+    console.log(salesID);
+    console.log(bondId);
+
     return (
         <div className="search">
             <div>查询销售数据</div>
@@ -92,7 +95,7 @@ function Search(props) {
                             aria-label="Default select example"
                             onChange={(name) => setSalesId(name.target.value)}
                         >
-                            <option value={null}>全部销售</option>
+                            <option value={0}>全部销售</option>
                             {salesNames}
                         </Form.Select>
                     </Col>
@@ -107,7 +110,7 @@ function Search(props) {
                             aria-label="Default select example"
                             onChange={(type) => setBondId(type.target.value)}
                         >
-                            <option value={null}>全部债券类型</option>
+                            <option value={0}>全部债券类型</option>
                             {bondTypes}
                         </Form.Select>
                     </Col>
