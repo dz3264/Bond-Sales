@@ -35,6 +35,17 @@ function Insert(props) {
         fetchLatestRecords();
     }, []);
 
+    const latestRecordsTable = latestRecords.map((record,idx)=>
+
+        <tr>
+            <td>{idx}</td>
+            <td>{record.username}</td>
+            <td>{record.date}</td>
+            <td>{record.bondname}</td>
+            <td>{record.price}</td>
+        </tr>
+    );
+
     async function submitInsert() {
 
         let data = {
@@ -53,19 +64,6 @@ function Insert(props) {
             });
 
     }
-
-    console.log(latestRecords);
-
-    const latestRecordsTable = latestRecords.map((record,idx)=>
-
-        <tr>
-            <td>{idx}</td>
-            <td>{record.username}</td>
-            <td>{record.date.split('T')[0]}</td>
-            <td>{record.bondname}</td>
-            <td>{record.price}</td>
-        </tr>
-    );
 
     function uploadFile() {
         // Create an object of formData

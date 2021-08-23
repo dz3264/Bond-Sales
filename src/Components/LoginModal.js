@@ -12,10 +12,6 @@ export default function SignInModal(props) {
         alert('欢迎'+name+'，'+'正在登陆中，请稍等');
     }
 
-    useEffect(() => {
-
-    }, []);
-
     return (
         <Modal
             {...props}
