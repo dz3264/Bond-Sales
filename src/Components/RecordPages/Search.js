@@ -36,9 +36,9 @@ function Search(props) {
 
             <tr>
                 <td>{idx}</td>
-                <td>{trans.userid}</td>
+                <td>{trans.username}</td>
                 <td>{trans.date.split('T')[0]}</td>
-                <td>{trans.bondid}</td>
+                <td>{trans.bondname}</td>
                 <td>{trans.price}</td>
             </tr>
 
