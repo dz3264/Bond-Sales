@@ -3,34 +3,62 @@ import "react-datepicker/dist/react-datepicker.css";
 import {Col, Row, Form, Button} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import {useState} from "react";
+import axios from "axios";
 
 
 function Insert(props) {
 
-    console.log(props.bondList);
-
     const salesNames = props.userList.map((user) =>
-        <option  value={user.username+"-"+user.userid}>{user.username+"-"+user.userid}</option>
+        <option  value={user.userid}>{user.username}</option>
     );
 
     const bondTypes = props.bondList.map((bond) =>
-        <option value={bond.bondname+"-"+bond.bondid}>{bond.bondname}</option>
+        <option value={bond.bondid}>{bond.bondname}</option>
     );
 
     const [startDate, setStartDate] = useState(new Date());
     const [salesID, setSalesId] = useState("");
-    const [salesName, setSalesName] = useState("");
     const [bondId, setBondId] = useState("");
-    const [bondType, setBondType] = useState("");
     const [transAmount, setTransAmount] = useState(-1);
     const [selectedFile, setSelectedFile] = useState("");
 
-    function submitInsert() {
-        alert(salesID+"\n"+salesName+"\n"+bondId+"\n"+bondType+"\n"+transAmount+"\n"+startDate);
+    async function submitInsert() {
+
+        let data = {
+            "bondid":bondId,
+            "userid":salesID,
+            "price":transAmount,
+            "date":startDate};
+
+        if(bondId==="" || salesID==="" ||transAmount===-1 ||startDate===null){
+            alert("请填写全部信息。");
+            return;
+        }
+        await axios.post('api/insertSales',data)
+            .then(res=>{
+                console.log('res=>',res);
+            });
+
     }
 
     function uploadFile() {
-        console.log(selectedFile);
+        // Create an object of formData
+        const formData = new FormData();
+
+        // Update the formData object
+        formData.append(
+            "myFile",
+            selectedFile,
+            selectedFile.name
+        );
+
+        // Details of the uploaded file
+        console.log("selectedFile: ",selectedFile);
+        console.log("formData: ",formData);
+
+        // Request made to the backend api
+        // Send formData object
+        axios.post("api/uploadFile", formData);
     }
 
     return (
@@ -47,10 +75,7 @@ function Insert(props) {
                         <Form.Select
                             aria-label="Default select example"
                             onChange={(name) => {
-                                let value = name.target.value.split("-")[0];
-                                let id = name.target.value.split("-")[1];
-                                setSalesName(value);
-                                setSalesId(id);
+                                setSalesId(name.target.value);
                             }}>
                             <option>选择销售</option>
                             {salesNames}
@@ -66,10 +91,7 @@ function Insert(props) {
                         <Form.Select
                             aria-label="Default select example"
                             onChange={(bond) => {
-                                let value = bond.target.value.split("-")[0];
-                                let id = bond.target.value.split("-")[1];
-                                setBondType(value);
-                                setBondId(id);
+                                setBondId(bond.target.value);
                             }}>
                             <option>选择债券类型</option>
                             {bondTypes}
@@ -117,8 +139,8 @@ function Insert(props) {
                 <br/>
                 <Form.Control
                     type="file"
-                    accept=".csv"
-                    onChange={(file) => setSelectedFile(file.target.files)}
+                    accept=".txt"
+                    onChange={(file) => setSelectedFile(file.target.files[0])}
                 />
                 <br/>
 

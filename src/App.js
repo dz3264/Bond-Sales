@@ -10,7 +10,7 @@ import {Container } from "react-bootstrap";
 
 function App() {
 
-    const [currentPage, setCurrentPage] = useState("insert");
+    const [currentPage, setCurrentPage] = useState("search");
 
     const [userList, setUserList] = useState([]);
     const [bondList, setBondList] = useState([]);
@@ -36,11 +36,11 @@ function App() {
     }, []);
 
     // TODO: get userinfo from backend
-    // const userInfo = {
-    //     userUID:"ZhangSan",
-    //     userName:"张三"
-    // };
-    const userInfo = {};
+    const userInfo = {
+        userUID:"ZhangSan",
+        userName:"张三"
+    };
+    //const userInfo = {};
     return (
         <div className="App">
 
