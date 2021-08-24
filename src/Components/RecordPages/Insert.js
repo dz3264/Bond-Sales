@@ -1,6 +1,6 @@
 import './RecordPages.css';
 import "react-datepicker/dist/react-datepicker.css";
-import {Col, Row, Form, Button, Table} from "react-bootstrap";
+import {Col, Row, Form, Button, Table, Modal} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -22,6 +22,8 @@ function Insert(props) {
     const [transAmount, setTransAmount] = useState(-1);
     const [selectedFile, setSelectedFile] = useState("");
     const [latestRecords, setLatestRecords] = useState([]);
+    const [isUpLoading, setIsUpLoading] = useState(false);
+    const [uploadModal, setUploadModal] = useState(false);
 
     useEffect(() => {
         const fetchLatestRecords = async () => {
@@ -65,24 +67,25 @@ function Insert(props) {
     }
 
     function uploadFile() {
-        // Create an object of formData
+
+        if(selectedFile === ""){
+            return;
+        }
+        setIsUpLoading(true);
         const formData = new FormData();
+        formData.append('file', selectedFile);
 
-        // Update the formData object
-        formData.append(
-            "uploadFile",
-            selectedFile,
-            selectedFile.name
-        );
+        axios.post("api2/upload", formData).then(res => {
+            console.log(res.data);
+            setSelectedFile("");
+            setIsUpLoading(false);
+            handleShow();
 
-        // Details of the uploaded file
-        console.log("selectedFile: ",selectedFile);
-        console.log("formData: ",formData);
-
-        // Request made to the backend api
-        // Send formData object
-        axios.post("api/uploadFile", formData);
+        });
     }
+
+    const handleClose = () => setUploadModal(false);
+    const handleShow = () => setUploadModal(true);
 
     return (
         <>
@@ -172,8 +175,8 @@ function Insert(props) {
 
                 <Button
                     variant="outline-primary"
-                    onClick={uploadFile}
-                >导入</Button>
+                    onClick={!isUpLoading ? uploadFile : null}
+                >{isUpLoading ? '传输中…' : '上传'}</Button>
             </Form.Group>
             </div>
         </div>
@@ -193,6 +196,17 @@ function Insert(props) {
             </Table>
 
         </div>
+            <Modal
+                show={uploadModal}
+                onHide={handleClose}
+                size="sm"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Header closeButton>
+                </Modal.Header>
+                <Modal.Body><h5>文件导入成功！</h5></Modal.Body>
+            </Modal>
         </>
     );
 }
