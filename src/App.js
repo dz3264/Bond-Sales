@@ -10,12 +10,12 @@ import {Container } from "react-bootstrap";
 
 function App() {
 
-    const [currentPage, setCurrentPage] = useState("search");
+    const [currentPage, setCurrentPage] = useState("insert");
 
     const [userList, setUserList] = useState([]);
     const [bondList, setBondList] = useState([]);
     const [expanded, setExpanded] = useState(false);
-    const [userInfo, setUserInfo] = useState(null);
+    const [userInfo, setUserInfo] = useState("null");
 
     useEffect(() => {
         const fetchUserInfo = () => {
@@ -41,7 +41,7 @@ function App() {
         };
         fetchUserList();
         fetchBondList();
-        fetchUserInfo();
+        //fetchUserInfo();
 
     }, []);
 
