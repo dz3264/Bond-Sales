@@ -15,11 +15,15 @@ function App() {
     const [userList, setUserList] = useState([]);
     const [bondList, setBondList] = useState([]);
     const [expanded, setExpanded] = useState(false);
-    //const [userInfo, setUserInfo] = useState(null);
+    const [userInfo, setUserInfo] = useState(null);
 
     useEffect(() => {
-        const sessionInfo = sessionStorage.getItem("USER");
-        console.log("session: ",sessionInfo);
+        const fetchUserInfo = () => {
+            const sessionInfo = sessionStorage.getItem("USER");
+            setUserInfo(sessionInfo);
+            console.log("sessionInfo: ",sessionInfo);
+
+        };
 
         const fetchUserList = async () => {
             const userResult = await axios(
@@ -37,35 +41,42 @@ function App() {
         };
         fetchUserList();
         fetchBondList();
+        fetchUserInfo();
 
     }, []);
 
-    // TODO: get userinfo from backend
-    let userInfo = {
-        userUID:"ZhangSan",
-        userName:"张三"
-    };
-    //const userInfo = {};
-
     async function loginFunction(username, password) {
-        let data = {"username":username, "password":password};
-        // await axios.post('api/login',data)
-        //         .then(res=>{
-        //             setUserInfo(res.data);
-        //             console.log('res=>',res);
-        //         });
+        let data = {"logname":username, "password":password};
+        await axios.post('api/login',data)
+                .then(res=>{
+                    setUserInfo(res.data);
+                    sessionStorage.setItem("USER", res.data);
+                });
 
     }
+
+    async function logOut(){
+        await axios.post('api/logout')
+            .then(res=>{
+                setUserInfo(null);
+                sessionStorage.removeItem("USER");
+            });
+    }
+    console.log("userInfo: ",userInfo);
+    console.log("page check: ", userInfo != null && userInfo.length > 0);
 
     return (
         <div className="App">
 
-            {userInfo
+            {userInfo != null && userInfo.length > 0
                 ?<>
                     <div style={{
                         marginLeft: expanded ? 240 : 64,
                     }}>
-                    <Header userInfo={userInfo}/>
+                    <Header
+                        userInfo={userInfo}
+                        logOut={logOut}
+                    />
                     <Container>
                         {currentPage === "insert"
                             ? <Insert userList={userList} bondList={bondList}/>
