@@ -11,11 +11,8 @@ import {Container } from "react-bootstrap";
 function App() {
 
     const [currentPage, setCurrentPage] = useState("insert");
-
-    const [userList, setUserList] = useState([]);
-    const [bondList, setBondList] = useState([]);
     const [expanded, setExpanded] = useState(false);
-    const [userInfo, setUserInfo] = useState("null");
+    const [userInfo, setUserInfo] = useState(null);
 
     useEffect(() => {
         const fetchUserInfo = () => {
@@ -25,23 +22,7 @@ function App() {
 
         };
 
-        const fetchUserList = async () => {
-            const userResult = await axios(
-                '/api/ListUser',
-            );
-
-            setUserList(userResult.data);
-        };
-        const fetchBondList = async () => {
-            const bondResult = await axios(
-                '/api/ListBond'
-            );
-
-            setBondList(bondResult.data);
-        };
-        fetchUserList();
-        fetchBondList();
-        //fetchUserInfo();
+        fetchUserInfo();
 
     }, []);
 
@@ -79,8 +60,8 @@ function App() {
                     />
                     <Container>
                         {currentPage === "insert"
-                            ? <Insert userList={userList} bondList={bondList}/>
-                            : <Search userList={userList} bondList={bondList}/>}
+                            ? <Insert />
+                            : <Search />}
                     </Container>
                     </div>
                     <SideNavbar

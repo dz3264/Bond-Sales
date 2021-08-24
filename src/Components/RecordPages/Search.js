@@ -1,5 +1,5 @@
 import './RecordPages.css';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Button, Col, Container, Form, Pagination, Row, Table} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import axios from "axios";
@@ -17,8 +17,36 @@ function Search(props) {
     const [salesID, setSalesId] = useState(0);
     const [bondId, setBondId] = useState(0);
     const [searchResult, setSearchResult] = useState([]);
+    const [userList, setUserList] = useState([]);
+    const [bondList, setBondList] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
 
-    //const [currentPage, setCurrentPage] = useState(1);
+    useEffect(() => {
+
+        const fetchUserList = async () => {
+            const userResult = await axios(
+                '/api/ListUser',
+            );
+
+            const salesNames = userResult.data.map((user) =>
+                <option  value={user.userid}>{user.username}</option>
+            );
+            setUserList(salesNames);
+        };
+        const fetchBondList = async () => {
+            const bondResult = await axios(
+                '/api/ListBond'
+            );
+
+            const bondTypes = bondResult.data.map((bond) =>
+                <option value={bond.bondid}>{bond.bondname}</option>
+            );
+
+            setBondList(bondTypes);
+        };
+        fetchUserList();
+        fetchBondList();
+    }, []);
 
     const fileHeader = [
         { label: "姓名", key: "username" },
@@ -26,15 +54,6 @@ function Search(props) {
         { label: "证券类型", key: "bondname" },
         { label: "金额", key: "price" }
     ];
-
-    // data
-    const salesNames = props.userList.map((user) =>
-        <option value={user.userid}>{user.username}</option>
-    );
-
-    const bondTypes = props.bondList.map((bond) =>
-        <option value={bond.bondid}>{bond.bondname}</option>
-    );
 
     // Pagination
     // const totalPage = Math.ceil(tempTransactions.length/dataPerPage);
@@ -100,7 +119,7 @@ function Search(props) {
                             onChange={(name) => setSalesId(name.target.value)}
                         >
                             <option value={0}>全部销售</option>
-                            {salesNames}
+                            {userList}
                         </Form.Select>
                     </Col>
                 </Form.Group>
@@ -115,7 +134,7 @@ function Search(props) {
                             onChange={(type) => setBondId(type.target.value)}
                         >
                             <option value={0}>全部债券类型</option>
-                            {bondTypes}
+                            {bondList}
                         </Form.Select>
                     </Col>
                 </Form.Group>
