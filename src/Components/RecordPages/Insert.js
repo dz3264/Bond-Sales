@@ -8,14 +8,6 @@ import axios from "axios";
 
 function Insert(props) {
 
-    const salesNames = props.userList.map((user) =>
-        <option  value={user.userid}>{user.username}</option>
-    );
-
-    const bondTypes = props.bondList.map((bond) =>
-        <option value={bond.bondid}>{bond.bondname}</option>
-    );
-
     const [startDate, setStartDate] = useState(new Date());
     const [salesID, setSalesId] = useState("");
     const [bondId, setBondId] = useState("");
@@ -24,6 +16,8 @@ function Insert(props) {
     const [latestRecords, setLatestRecords] = useState([]);
     const [isUpLoading, setIsUpLoading] = useState(false);
     const [uploadModal, setUploadModal] = useState(false);
+    const [userList, setUserList] = useState([]);
+    const [bondList, setBondList] = useState([]);
 
     useEffect(() => {
         const fetchLatestRecords = async () => {
@@ -34,6 +28,29 @@ function Insert(props) {
             setLatestRecords(recordsResult.data);
         };
 
+        const fetchUserList = async () => {
+            const userResult = await axios(
+                '/api/ListUser',
+            );
+
+            const salesNames = userResult.data.map((user) =>
+                <option  value={user.userid}>{user.username}</option>
+            );
+            setUserList(salesNames);
+        };
+        const fetchBondList = async () => {
+            const bondResult = await axios(
+                '/api/ListBond'
+            );
+
+            const bondTypes = bondResult.data.map((bond) =>
+                <option value={bond.bondid}>{bond.bondname}</option>
+            );
+
+            setBondList(bondTypes);
+        };
+        fetchUserList();
+        fetchBondList();
         fetchLatestRecords();
     }, []);
 
@@ -105,7 +122,7 @@ function Insert(props) {
                                 setSalesId(name.target.value);
                             }}>
                             <option>选择销售</option>
-                            {salesNames}
+                            {userList}
                         </Form.Select>
                     </Col>
                 </Form.Group>
@@ -121,7 +138,7 @@ function Insert(props) {
                                 setBondId(bond.target.value);
                             }}>
                             <option>选择债券类型</option>
-                            {bondTypes}
+                            {bondList}
                         </Form.Select>
                     </Col>
                 </Form.Group>

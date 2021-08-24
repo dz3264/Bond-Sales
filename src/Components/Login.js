@@ -8,6 +8,7 @@ export default function Login(props){
 
     const [modalShow, setModalShow] = useState(false);
 
+    console.log("Login: ",props.showError);
     return (
         <section id="hero" className="d-flex align-items-center">
             <div className="container" data-aos="zoom-out" data-aos-delay="100">
@@ -29,6 +30,7 @@ export default function Login(props){
                 show={modalShow}
                 onHide={() => setModalShow(false)}
                 loginFunction={props.loginFunction}
+                showError={props.showError}
             />
         </section>
     );

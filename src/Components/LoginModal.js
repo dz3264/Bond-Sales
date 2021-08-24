@@ -3,14 +3,11 @@ import {Button, Col, Form, Modal} from 'react-bootstrap';
 import {useEffect, useState} from "react";
 import axios from "axios";
 
-export default function SignInModal(props) {
+export default function LoginModal(props) {
 
     const [name, setName] = useState("");
     const [password, setPassword] = useState(-1);
-
-    function submitLogin() {
-        alert('欢迎'+name+'，'+'正在登陆中，请稍等');
-    }
+    const [showError, setShowError] = useState(false);
 
     return (
         <Modal
@@ -40,11 +37,26 @@ export default function SignInModal(props) {
                                   type="password"
                                   placeholder="请输入你的密码" />
                 </Form.Group>
+                <div
+                    className={"wrong-message"}
+                    // style={{visibility: props.showError ? "inherit":"hidden"}}
+                    style={{visibility: showError ? "inherit":"hidden"}}
+                >用户名或密码错误！</div>
             </Modal.Body>
             <Modal.Footer>
                 <div className={"modal-footer-content"}>
                 <a href={""} className={"footer-link"}>忘记密码</a>
-                <Button onClick={() => {props.loginFunction(name, password)}}>登陆</Button>
+                <Button onClick={() => {
+                    props.loginFunction(name, password).then(res => {
+                        if(!res){
+                            setShowError(true);
+                            setTimeout(() => {
+                                // After 3 seconds set the show value to false
+                                setShowError(false)
+                            }, 3000);
+                        }
+                    });
+                }}>登陆</Button>
                 </div>
             </Modal.Footer>
         </Modal>

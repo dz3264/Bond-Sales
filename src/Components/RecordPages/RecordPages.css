@@ -50,3 +50,8 @@
     height: 65vh;
     overflow-y: scroll;
 }
+
+.wrong-message{
+    color: orangered;
+    text-align: center;
+}

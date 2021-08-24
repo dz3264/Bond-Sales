@@ -2,36 +2,12 @@ import './Style.css';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import insertIcon from '../assets/img/insert.svg';
 import searchIcon from '../assets/img/search.svg';
-import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
+import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import axios from "axios";
 import {useEffect, useState} from "react";
 
 
 function SideNavbar(props) {
-
-    const [userList, setUserList] = useState([]);
-    const [bondList, setBondList] = useState([]);
-
-    useEffect(() => {
-        const fetchUserList = async () => {
-            const userResult = await axios(
-                '/api/ListUser',
-            );
-
-            setUserList(userResult.data);
-        };
-        const fetchBondList = async () => {
-            const bondResult = await axios(
-                '/api/ListBond'
-            );
-
-            setBondList(bondResult.data);
-        };
-        fetchUserList();
-        fetchBondList();
-    }, []);
-
-
 
     return (
         <div className="record">
