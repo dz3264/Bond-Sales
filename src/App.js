@@ -18,22 +18,27 @@ function App() {
         const fetchUserInfo = () => {
             const sessionInfo = sessionStorage.getItem("USER");
             setUserInfo(sessionInfo);
-            console.log("sessionInfo: ",sessionInfo);
-
         };
-
         fetchUserInfo();
 
     }, []);
 
     async function loginFunction(username, password) {
         let data = {"logname":username, "password":password};
-        await axios.post('api/login',data)
-                .then(res=>{
+        const result = await axios.post('api/login',data)
+            .then(res=>{
+                console.log(res);
+                if(res.data){
                     setUserInfo(res.data);
                     sessionStorage.setItem("USER", res.data);
-                });
+                    return true;
+                }else{
+                    return false;
+                }
+            });
 
+        console.log("loginFunction: ",result);
+        return result
     }
 
     async function logOut(){
@@ -43,8 +48,6 @@ function App() {
                 sessionStorage.removeItem("USER");
             });
     }
-    console.log("userInfo: ",userInfo);
-    console.log("page check: ", userInfo != null && userInfo.length > 0);
 
     return (
         <div className="App">
@@ -69,7 +72,9 @@ function App() {
                         setExpanded={setExpanded}
                     />
                 </>
-                : <Login loginFunction={loginFunction}/>}
+                : <Login
+                    loginFunction={loginFunction}
+                />}
 
         </div>
     );
