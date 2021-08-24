@@ -92,12 +92,11 @@ function Insert(props) {
         const formData = new FormData();
         formData.append('file', selectedFile);
 
-        axios.post("api2/upload", formData).then(res => {
+        axios.post("api/fileUpload", formData).then(res => {
             console.log(res.data);
             setSelectedFile("");
             setIsUpLoading(false);
             handleShow();
-
         });
     }
 
