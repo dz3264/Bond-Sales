@@ -5,7 +5,7 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import { CSVLink } from "react-csv";
 
-const dataPerPage = 10;
+const numPerPage = 20;
 
 function Search(props) {
 
@@ -17,6 +17,7 @@ function Search(props) {
     const [salesID, setSalesId] = useState(0);
     const [bondId, setBondId] = useState(0);
     const [searchResult, setSearchResult] = useState([]);
+    const [totalDataPage, setTotalDataPage] = useState(0);
     const [userList, setUserList] = useState([]);
     const [bondList, setBondList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -56,51 +57,69 @@ function Search(props) {
     ];
 
     // Pagination
-    // const totalPage = Math.ceil(tempTransactions.length/dataPerPage);
-    // const pagination = [];
+    const totalPage = Math.ceil(totalDataPage/numPerPage);
+    let pagination = [];
     const transactionsTable = searchResult.map((trans,idx)=>
 
-            <tr>
-                <td>{idx+1}</td>
-                <td>{trans.username}</td>
-                <td>{trans.date.split('T')[0]}</td>
-                <td>{trans.bondname}</td>
-                <td>{trans.price}</td>
-            </tr>
+        <tr>
+            <td>{idx+1}</td>
+            <td>{trans.username}</td>
+            <td>{trans.date.split('T')[0]}</td>
+            <td>{trans.bondname}</td>
+            <td>{trans.price}</td>
+        </tr>
     );
 
-    // for (let i = 1; i <= totalPage; i++){
-    //     if (i === currentPage){
-    //         pagination.push(<Pagination.Item key={i}  active>{i}</Pagination.Item>)
-    //     }
-    //     else{
-    //         pagination.push(<Pagination.Item key={i}  onClick={(e)=>changePage(e.target.text)}>{i}</Pagination.Item>)
-    //     }
-    // }
+    for (let i = 1; i <= totalPage; i++){
+        if(currentPage === i){
+            pagination.push(
+                <option value={i} selected>
+                    {i}
+                </option>)
+        }else {
+            pagination.push(
+                <option value={i}>
+                    {i}
+                </option>)
+        }
+
+    }
 
     // functions
     async function submitSearch() {
+        await getSearchResult(currentPage);
+    }
+
+    async function changePage(p) {
+        let newPage = parseInt(p);
+        console.log("change page: ",newPage);
+        if (newPage >= 1 && newPage <= totalPage){
+            setCurrentPage(newPage);
+            await getSearchResult(newPage);
+        }
+    }
+
+    async function getSearchResult(p){
         let data = {
             "userid":salesID > 0 ? salesID : null,
             "bondid":bondId > 0 ? bondId : null,
             "startDate":startDate,
-            "endDate":endDate
+            "endDate":endDate,
+            "pageNumber":p,
+            "numPerPage":numPerPage
         };
+
+        console.log(data);
 
         await axios.post('api/lookUp',data)
             .then(res=>{
                 console.log('res=>',res);
                 setSearchResult(res.data);
+                setTotalDataPage(71);
             });
     }
 
-
-    // function changePage(p) {
-    //     let newPage = parseInt(p);
-    //     if (newPage >= 1 && newPage <= totalPage){
-    //         setCurrentPage(newPage);
-    //     }
-    // }
+    console.log("new searchResult: ",searchResult);
 
     return (
         <div className="search">
@@ -170,7 +189,7 @@ function Search(props) {
                         data={searchResult}
                         headers={fileHeader}
                         filename={"债券销售数据.csv"}
-                        onClick={event => {
+                        onClick={(event) => {
                             if(searchResult.length <= 0){
                                 alert("查询数据为空！");
                                 return false;
@@ -180,8 +199,7 @@ function Search(props) {
                         <Button
                             className={"search-btn"}
                             variant="outline-primary"
-                        >
-                            下载
+                        > 下载
                         </Button>
                     </CSVLink>
                 </div>
@@ -189,7 +207,7 @@ function Search(props) {
                 </div>
             </Form>
 
-            <div className={"transaction-table"}>
+            {/*<div className={"transaction-table"}>*/}
             <Table striped bordered hover>
                 <thead>
                 <tr>
@@ -204,22 +222,28 @@ function Search(props) {
                 {transactionsTable}
                 </tbody>
             </Table>
-            </div>
-            {/*{totalPage > 1*/}
-            {/*    ? <Pagination>*/}
-            {/*        <Pagination.First*/}
-            {/*            onClick={()=>changePage(1)}/>*/}
-            {/*        <Pagination.Prev*/}
-            {/*            onClick={()=>changePage(currentPage-1)}/>*/}
-            {/*        {pagination}*/}
-            {/*        <Pagination.Next*/}
-            {/*            onClick={()=>changePage(currentPage+1)}/>*/}
-            {/*        <Pagination.Last*/}
-            {/*            onClick={()=>changePage(totalPage)}/>*/}
-            {/*    </Pagination>*/}
-            {/*    : null}*/}
 
-
+            {totalPage > 1
+                ? <Pagination>
+                    <Pagination.First
+                        onClick={()=>changePage(1)}/>
+                    <Pagination.Prev
+                        onClick={()=>changePage(currentPage-1)}/>
+                    <Form.Select
+                        aria-label="Default select example"
+                        onChange={(e)=>changePage(e.target.value)}
+                    >
+                        {pagination}
+                    </Form.Select>
+                    {/*<Pagination.Item onClick={()=>changePage(currentPage)}>*/}
+                    {/*    {"GO"}*/}
+                    {/*</Pagination.Item>*/}
+                    <Pagination.Next
+                        onClick={()=>changePage(currentPage+1)}/>
+                    <Pagination.Last
+                        onClick={()=>changePage(totalPage)}/>
+                </Pagination>
+                : null}
 
         </div>
     );
