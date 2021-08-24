@@ -111,11 +111,16 @@ function Search(props) {
 
         console.log(data);
 
+        await axios.post('api/lookUpCount',data)
+            .then(res=>{
+                console.log('res=>',res);
+                setTotalDataPage(res.data);
+            });
+
         await axios.post('api/lookUp',data)
             .then(res=>{
                 console.log('res=>',res);
                 setSearchResult(res.data);
-                setTotalDataPage(71);
             });
     }
 
