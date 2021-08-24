@@ -54,12 +54,12 @@ function App() {
 
             {userInfo != null && userInfo.length > 0
                 ?<>
-                    <div style={{
-                        marginLeft: expanded ? 240 : 64,
-                    }}>
+                    <div>
                     <Header
                         userInfo={userInfo}
                         logOut={logOut}
+                        setCurrentPage={setCurrentPage}
+                        currentPage={currentPage}
                     />
                     <Container>
                         {currentPage === "insert"
@@ -67,10 +67,6 @@ function App() {
                             : <Search />}
                     </Container>
                     </div>
-                    <SideNavbar
-                        setCurrentPage={setCurrentPage}
-                        setExpanded={setExpanded}
-                    />
                 </>
                 : <Login
                     loginFunction={loginFunction}
