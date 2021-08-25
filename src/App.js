@@ -41,7 +41,7 @@ function App() {
     }, []);
 
     async function loginFunction(name, password){
-        await axios.post('${this.$url}/test/testRequest',data)
+        await axios.post('${this.$url}/test/testRequest')
             .then(res=>{
                 console.log('res=>',res);
                 setUserInfo(res.data);

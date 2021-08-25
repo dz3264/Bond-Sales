@@ -8,6 +8,9 @@ function Header(props) {
         alert("signout");
     }
 
+    const sessionInfo = sessionStorage.getItem("USER");
+    console.log("session in header: ",sessionInfo);
+
     return (
         <div className="header">
             <Navbar bg="light" variant="light ">
