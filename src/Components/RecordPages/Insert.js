@@ -1,6 +1,6 @@
 import './RecordPages.css';
 import "react-datepicker/dist/react-datepicker.css";
-import {Col, Row, Form, Button, Table} from "react-bootstrap";
+import {Col, Row, Form, Button, Table, Modal} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -8,20 +8,16 @@ import axios from "axios";
 
 function Insert(props) {
 
-    const salesNames = props.userList.map((user) =>
-        <option  value={user.userid}>{user.username}</option>
-    );
-
-    const bondTypes = props.bondList.map((bond) =>
-        <option value={bond.bondid}>{bond.bondname}</option>
-    );
-
     const [startDate, setStartDate] = useState(new Date());
     const [salesID, setSalesId] = useState("");
     const [bondId, setBondId] = useState("");
     const [transAmount, setTransAmount] = useState(-1);
     const [selectedFile, setSelectedFile] = useState("");
     const [latestRecords, setLatestRecords] = useState([]);
+    const [isUpLoading, setIsUpLoading] = useState(false);
+    const [uploadModal, setUploadModal] = useState(false);
+    const [userList, setUserList] = useState([]);
+    const [bondList, setBondList] = useState([]);
 
     useEffect(() => {
         const fetchLatestRecords = async () => {
@@ -32,13 +28,35 @@ function Insert(props) {
             setLatestRecords(recordsResult.data);
         };
 
+        const fetchUserList = async () => {
+            const userResult = await axios(
+                '/api/ListUser',
+            );
+
+            const salesNames = userResult.data.map((user) =>
+                <option  value={user.userid}>{user.username}</option>
+            );
+            setUserList(salesNames);
+        };
+        const fetchBondList = async () => {
+            const bondResult = await axios(
+                '/api/ListBond'
+            );
+
+            const bondTypes = bondResult.data.map((bond) =>
+                <option value={bond.bondid}>{bond.bondname}</option>
+            );
+
+            setBondList(bondTypes);
+        };
+        fetchUserList();
+        fetchBondList();
         fetchLatestRecords();
     }, []);
 
     const latestRecordsTable = latestRecords.map((record,idx)=>
 
         <tr>
-            <td>{idx}</td>
             <td>{record.username}</td>
             <td>{record.date}</td>
             <td>{record.bondname}</td>
@@ -66,30 +84,30 @@ function Insert(props) {
     }
 
     function uploadFile() {
-        // Create an object of formData
+
+        if(selectedFile === ""){
+            return;
+        }
+        setIsUpLoading(true);
         const formData = new FormData();
+        formData.append('file', selectedFile);
 
-        // Update the formData object
-        formData.append(
-            "myFile",
-            selectedFile,
-            selectedFile.name
-        );
-
-        // Details of the uploaded file
-        console.log("selectedFile: ",selectedFile);
-        console.log("formData: ",formData);
-
-        // Request made to the backend api
-        // Send formData object
-        axios.post("api/uploadFile", formData);
+        axios.post("api/fileUpload", formData).then(res => {
+            console.log(res.data);
+            setSelectedFile("");
+            setIsUpLoading(false);
+            handleShow();
+        });
     }
+
+    const handleClose = () => setUploadModal(false);
+    const handleShow = () => setUploadModal(true);
 
     return (
         <>
         <div className="insert">
             <div className={"insert-section"}>
-            <div>录入销售记录</div>
+            <h4>录入销售记录</h4>
             <br/>
             <Form onSubmit={submitInsert}>
                 <Form.Group as={Row} className="mb-3" controlId="formSalesName">
@@ -103,7 +121,7 @@ function Insert(props) {
                                 setSalesId(name.target.value);
                             }}>
                             <option>选择销售</option>
-                            {salesNames}
+                            {userList}
                         </Form.Select>
                     </Col>
                 </Form.Group>
@@ -119,7 +137,7 @@ function Insert(props) {
                                 setBondId(bond.target.value);
                             }}>
                             <option>选择债券类型</option>
-                            {bondTypes}
+                            {bondList}
                         </Form.Select>
                     </Col>
                 </Form.Group>
@@ -151,7 +169,7 @@ function Insert(props) {
                     <Col sm={{ span: 10, offset:1 }}>
                         <Button
                             type="submit"
-                            variant="outline-dark"
+                            variant="primary"
                         >提交</Button>
                     </Col>
                 </Form.Group>
@@ -160,7 +178,7 @@ function Insert(props) {
 
             <div className={"insert-section insert-file"}>
 
-                <Form.Label>批量导入销售数据</Form.Label>
+                <h4>批量导入销售数据</h4>
                 <br/>
                 <Form.Control
                     type="file"
@@ -172,9 +190,9 @@ function Insert(props) {
             <Form.Group as={Row} className="mb-3">
 
                 <Button
-                    variant="outline-dark"
-                    onClick={uploadFile}
-                >导入</Button>
+                    variant="outline-primary"
+                    onClick={!isUpLoading ? uploadFile : null}
+                >{isUpLoading ? '传输中…' : '上传'}</Button>
             </Form.Group>
             </div>
         </div>
@@ -182,7 +200,6 @@ function Insert(props) {
             <Table striped bordered hover>
                 <thead>
                 <tr>
-                    <th>#</th>
                     <th>姓名</th>
                     <th>日期</th>
                     <th>证券类型</th>
@@ -195,6 +212,17 @@ function Insert(props) {
             </Table>
 
         </div>
+            <Modal
+                show={uploadModal}
+                onHide={handleClose}
+                size="sm"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Header closeButton>
+                </Modal.Header>
+                <Modal.Body><h5>文件导入成功！</h5></Modal.Body>
+            </Modal>
         </>
     );
 }

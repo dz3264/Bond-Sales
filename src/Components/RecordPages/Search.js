@@ -1,10 +1,11 @@
 import './RecordPages.css';
+import {useEffect, useState} from "react";
 import {Button, Col, Container, Form, Pagination, Row, Table} from "react-bootstrap";
 import DatePicker from "react-datepicker";
-import {useState} from "react";
 import axios from "axios";
+import { CSVLink } from "react-csv";
 
-const dataPerPage = 10;
+const numPerPage = 20;
 
 function Search(props) {
 
@@ -13,53 +14,108 @@ function Search(props) {
     const [endDate, setEndDate] = useState(new Date());
     const [salesName, setSalesName] = useState("");
     const [bondType, setBondType] = useState("");
-    const [salesID, setSalesId] = useState("");
-    const [bondId, setBondId] = useState("");
+    const [salesID, setSalesId] = useState(0);
+    const [bondId, setBondId] = useState(0);
     const [searchResult, setSearchResult] = useState([]);
+    const [totalDataPage, setTotalDataPage] = useState(0);
+    const [userList, setUserList] = useState([]);
+    const [bondList, setBondList] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
 
-    //const [currentPage, setCurrentPage] = useState(1);
+    useEffect(() => {
 
+        const fetchUserList = async () => {
+            const userResult = await axios(
+                '/api/ListUser',
+            );
 
-    // data
-    const salesNames = props.userList.map((user) =>
-        <option value={user.userid}>{user.username}</option>
-    );
+            const salesNames = userResult.data.map((user) =>
+                <option  value={user.userid}>{user.username}</option>
+            );
+            setUserList(salesNames);
+        };
+        const fetchBondList = async () => {
+            const bondResult = await axios(
+                '/api/ListBond'
+            );
 
-    const bondTypes = props.bondList.map((bond) =>
-        <option value={bond.bondid}>{bond.bondname}</option>
-    );
+            const bondTypes = bondResult.data.map((bond) =>
+                <option value={bond.bondid}>{bond.bondname}</option>
+            );
+
+            setBondList(bondTypes);
+        };
+        fetchUserList();
+        fetchBondList();
+    }, []);
+
+    const fileHeader = [
+        { label: "姓名", key: "username" },
+        { label: "日期", key: "date" },
+        { label: "证券类型", key: "bondname" },
+        { label: "金额", key: "price" }
+    ];
 
     // Pagination
-    // const totalPage = Math.ceil(tempTransactions.length/dataPerPage);
-    // const pagination = [];
+    const totalPage = Math.ceil(totalDataPage/numPerPage);
+    let pagination = [];
     const transactionsTable = searchResult.map((trans,idx)=>
 
-            <tr>
-                <td>{idx}</td>
-                <td>{trans.username}</td>
-                <td>{trans.date.split('T')[0]}</td>
-                <td>{trans.bondname}</td>
-                <td>{trans.price}</td>
-            </tr>
+        <tr>
+            <td>{idx+1}</td>
+            <td>{trans.username}</td>
+            <td>{trans.date.split('T')[0]}</td>
+            <td>{trans.bondname}</td>
+            <td>{trans.price}</td>
+        </tr>
     );
 
-    // for (let i = 1; i <= totalPage; i++){
-    //     if (i === currentPage){
-    //         pagination.push(<Pagination.Item key={i}  active>{i}</Pagination.Item>)
-    //     }
-    //     else{
-    //         pagination.push(<Pagination.Item key={i}  onClick={(e)=>changePage(e.target.text)}>{i}</Pagination.Item>)
-    //     }
-    // }
+    for (let i = 1; i <= totalPage; i++){
+        if(currentPage === i){
+            pagination.push(
+                <option value={i} selected>
+                    {i}
+                </option>)
+        }else {
+            pagination.push(
+                <option value={i}>
+                    {i}
+                </option>)
+        }
+
+    }
 
     // functions
     async function submitSearch() {
+        await getSearchResult(currentPage);
+    }
+
+    async function changePage(p) {
+        let newPage = parseInt(p);
+        console.log("change page: ",newPage);
+        if (newPage >= 1 && newPage <= totalPage){
+            setCurrentPage(newPage);
+            await getSearchResult(newPage);
+        }
+    }
+
+    async function getSearchResult(p){
         let data = {
-            "userid":salesID,
-            "bondid":bondId,
+            "userid":salesID > 0 ? salesID : null,
+            "bondid":bondId > 0 ? bondId : null,
             "startDate":startDate,
-            "endDate":endDate
+            "endDate":endDate,
+            "pageNumber":p,
+            "numPerPage":numPerPage
         };
+
+        console.log(data);
+
+        await axios.post('api/lookUpCount',data)
+            .then(res=>{
+                console.log('res=>',res);
+                setTotalDataPage(res.data);
+            });
 
         await axios.post('api/lookUp',data)
             .then(res=>{
@@ -68,17 +124,11 @@ function Search(props) {
             });
     }
 
-    // function changePage(p) {
-    //     let newPage = parseInt(p);
-    //     if (newPage >= 1 && newPage <= totalPage){
-    //         setCurrentPage(newPage);
-    //     }
-    // }
+    console.log("new searchResult: ",searchResult);
 
     return (
         <div className="search">
-            <div>查询销售数据</div>
-            <br/>
+            <h3>查询销售数据</h3>
             <Form>
                 <div className={"form-section"}>
                 <div className={"form-subsection"}>
@@ -92,8 +142,8 @@ function Search(props) {
                             aria-label="Default select example"
                             onChange={(name) => setSalesId(name.target.value)}
                         >
-                            <option value={null}>全部销售</option>
-                            {salesNames}
+                            <option value={0}>全部销售</option>
+                            {userList}
                         </Form.Select>
                     </Col>
                 </Form.Group>
@@ -107,8 +157,8 @@ function Search(props) {
                             aria-label="Default select example"
                             onChange={(type) => setBondId(type.target.value)}
                         >
-                            <option value={null}>全部债券类型</option>
-                            {bondTypes}
+                            <option value={0}>全部债券类型</option>
+                            {bondList}
                         </Form.Select>
                     </Col>
                 </Form.Group>
@@ -132,19 +182,37 @@ function Search(props) {
                 </div>
 
 
-                <Form.Group as={Row} className="mb-3">
-                    <Col sm={{ span: 10, offset:1 }}>
+                <div  className="search-btn-group">
+
                         <Button
-                            variant="outline-dark"
+                            className={"search-btn"}
+                            variant="primary"
                             onClick={submitSearch}
                         >查询</Button>
-                    </Col>
-                </Form.Group>
+
+                    <CSVLink
+                        data={searchResult}
+                        headers={fileHeader}
+                        filename={"债券销售数据.csv"}
+                        onClick={(event) => {
+                            if(searchResult.length <= 0){
+                                alert("查询数据为空！");
+                                return false;
+                            }
+                        }}
+                    >
+                        <Button
+                            className={"search-btn"}
+                            variant="outline-primary"
+                        > 下载
+                        </Button>
+                    </CSVLink>
+                </div>
 
                 </div>
             </Form>
 
-            <div className={"transaction-table"}>
+            {/*<div className={"transaction-table"}>*/}
             <Table striped bordered hover>
                 <thead>
                 <tr>
@@ -159,22 +227,28 @@ function Search(props) {
                 {transactionsTable}
                 </tbody>
             </Table>
-            </div>
-            {/*{totalPage > 1*/}
-            {/*    ? <Pagination>*/}
-            {/*        <Pagination.First*/}
-            {/*            onClick={()=>changePage(1)}/>*/}
-            {/*        <Pagination.Prev*/}
-            {/*            onClick={()=>changePage(currentPage-1)}/>*/}
-            {/*        {pagination}*/}
-            {/*        <Pagination.Next*/}
-            {/*            onClick={()=>changePage(currentPage+1)}/>*/}
-            {/*        <Pagination.Last*/}
-            {/*            onClick={()=>changePage(totalPage)}/>*/}
-            {/*    </Pagination>*/}
-            {/*    : null}*/}
 
-
+            {totalPage > 1
+                ? <Pagination>
+                    <Pagination.First
+                        onClick={()=>changePage(1)}/>
+                    <Pagination.Prev
+                        onClick={()=>changePage(currentPage-1)}/>
+                    <Form.Select
+                        aria-label="Default select example"
+                        onChange={(e)=>changePage(e.target.value)}
+                    >
+                        {pagination}
+                    </Form.Select>
+                    {/*<Pagination.Item onClick={()=>changePage(currentPage)}>*/}
+                    {/*    {"GO"}*/}
+                    {/*</Pagination.Item>*/}
+                    <Pagination.Next
+                        onClick={()=>changePage(currentPage+1)}/>
+                    <Pagination.Last
+                        onClick={()=>changePage(totalPage)}/>
+                </Pagination>
+                : null}
 
         </div>
     );
