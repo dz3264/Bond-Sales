@@ -10,7 +10,6 @@ import {Container } from "react-bootstrap";
 function App() {
 
     const [currentPage, setCurrentPage] = useState("insert");
-    const [expanded, setExpanded] = useState(false);
     const [userInfo, setUserInfo] = useState(null);
 
     useEffect(() => {

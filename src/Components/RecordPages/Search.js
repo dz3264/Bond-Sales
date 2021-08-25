@@ -85,7 +85,8 @@ function Search(props) {
 
     // functions
     async function submitSearch() {
-        await getSearchResult(currentPage);
+        await getSearchResult(1);
+        setCurrentPage(1);
     }
 
     async function changePage(p) {
@@ -122,7 +123,6 @@ function Search(props) {
             });
     }
 
-    console.log("new searchResult: ",searchResult);
 
     return (
         <div className="search">
