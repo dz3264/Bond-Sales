@@ -1,6 +1,6 @@
 import './RecordPages.css';
 import {useEffect, useState} from "react";
-import {Button, Col, Container, Form, Pagination, Row, Table} from "react-bootstrap";
+import {Button, Col, Form, Pagination, Row, Table} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import { CSVLink } from "react-csv";
@@ -12,8 +12,6 @@ function Search(props) {
     // state
     const [startDate, setStartDate] = useState(new Date("2000-01-01"));
     const [endDate, setEndDate] = useState(new Date());
-    const [salesName, setSalesName] = useState("");
-    const [bondType, setBondType] = useState("");
     const [salesID, setSalesId] = useState(0);
     const [bondId, setBondId] = useState(0);
     const [searchResult, setSearchResult] = useState([]);
@@ -212,7 +210,6 @@ function Search(props) {
                 </div>
             </Form>
 
-            {/*<div className={"transaction-table"}>*/}
             <Table striped bordered hover>
                 <thead>
                 <tr>
@@ -240,9 +237,6 @@ function Search(props) {
                     >
                         {pagination}
                     </Form.Select>
-                    {/*<Pagination.Item onClick={()=>changePage(currentPage)}>*/}
-                    {/*    {"GO"}*/}
-                    {/*</Pagination.Item>*/}
                     <Pagination.Next
                         onClick={()=>changePage(currentPage+1)}/>
                     <Pagination.Last
